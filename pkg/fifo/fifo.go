@@ -1,14 +1,13 @@
 package fifo
 
 import (
-	"sync"
-
 	"github.com/Dirk007/simpleFifo/pkg/fifo/internal/item"
+	"github.com/Dirk007/simpleFifo/pkg/fifo/internal/locking"
 )
 
 // Fifo that can solely be used to push items to the beginning and pop items from the end
 type Fifo[T any] struct {
-	lock  sync.RWMutex
+	lock  locking.Lock
 	count uint64
 	limit uint64
 	first *item.FifoItem[T]
@@ -16,7 +15,16 @@ type Fifo[T any] struct {
 }
 
 func NewFifo[T any]() *Fifo[T] {
-	return &Fifo[T]{}
+	return &Fifo[T]{
+		lock:  locking.NewNopLock(),
+		count: 0,
+		limit: 0,
+	}
+}
+
+func (f *Fifo[T]) WithLocking() *Fifo[T] {
+	f.lock = locking.NewMutexLock()
+	return f
 }
 
 func (f *Fifo[T]) WithLimit(limit uint64) *Fifo[T] {
