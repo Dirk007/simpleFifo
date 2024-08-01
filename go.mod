@@ -1,6 +1,6 @@
-module fifo
+module github.com/Dirk007/simpleFifo
 
-go 1.22.3
+go 1.22.5
 
 require github.com/stretchr/testify v1.9.0
 

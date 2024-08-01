@@ -1,8 +1,9 @@
 package fifo
 
 import (
-	"fifo/pkg/fifo/internal/item"
 	"sync"
+
+	"github.com/Dirk007/simpleFifo/pkg/fifo/internal/item"
 )
 
 // Fifo that can solely be used to push items to the end and pop items from the beginning.
