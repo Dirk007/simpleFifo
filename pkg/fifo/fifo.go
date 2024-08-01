@@ -16,14 +16,14 @@ type Fifo[T any] struct {
 
 func NewFifo[T any]() *Fifo[T] {
 	return &Fifo[T]{
-		lock:  locking.NewNopLock(),
+		lock:  locking.NewMutexLock(),
 		count: 0,
 		limit: 0,
 	}
 }
 
-func (f *Fifo[T]) WithLocking() *Fifo[T] {
-	f.lock = locking.NewMutexLock()
+func (f *Fifo[T]) WithoutLocking() *Fifo[T] {
+	f.lock = locking.NewNopLock()
 	return f
 }
 

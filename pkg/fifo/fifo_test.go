@@ -31,8 +31,8 @@ func Test_FifoPrinciple(t *testing.T) {
 	requireSuccessfulValuePop(t, f, 5)
 }
 
-func Test_FifoPrinciple_WithLocking(t *testing.T) {
-	f := NewFifo[int]().WithLocking()
+func Test_FifoPrinciple_WithoutLocking(t *testing.T) {
+	f := NewFifo[int]().WithoutLocking()
 
 	f.Add(1)
 	f.Add(2)
