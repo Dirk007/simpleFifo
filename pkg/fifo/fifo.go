@@ -6,7 +6,7 @@ import (
 	"github.com/Dirk007/simpleFifo/pkg/fifo/internal/item"
 )
 
-// Fifo that can solely be used to push items to the end and pop items from the beginning.
+// Fifo that can solely be used to push items to the beginning and pop items from the end
 type Fifo[T any] struct {
 	lock  sync.RWMutex
 	count uint64
