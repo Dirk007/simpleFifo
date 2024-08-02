@@ -14,6 +14,8 @@ func (e *FifoItem[T]) Value() T {
 	return e.content
 }
 
+// Remove removes the current item from the list and returns the new tail and the removed value.
+// If the current item is the only one in the list, the returned tail will be nil.
 func (e *FifoItem[T]) Remove() (*FifoItem[T], T) {
 	if e.previous == nil {
 		return nil, e.content
@@ -22,6 +24,7 @@ func (e *FifoItem[T]) Remove() (*FifoItem[T], T) {
 	return e.previous, e.content
 }
 
+// Prepend adds a new item to the beginning of the list and returns the new head.
 func (e *FifoItem[T]) Prepend(value T) *FifoItem[T] {
 	e.previous = &FifoItem[T]{
 		content:  value,

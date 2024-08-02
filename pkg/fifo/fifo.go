@@ -5,7 +5,7 @@ import (
 	"github.com/Dirk007/simpleFifo/pkg/fifo/internal/locking"
 )
 
-// Fifo that can solely be used to push items to the beginning and pop items from the end
+// Fifo that can solely be used to push items to the beginning and pop items from the end.
 type Fifo[T any] struct {
 	lock  locking.Lock
 	count uint64
@@ -32,11 +32,15 @@ func (f *Fifo[T]) WithLimit(limit uint64) *Fifo[T] {
 	return f
 }
 
+// Add pushes new values to the beginning of the FIFO.
+// The values will be processed in the reverse order they were given - just like they where added sequentially.
+// Returns an error if the FIFO limit is or would be reached.
+// If the FIFO limit would be reached when inserting all values, NO value will be added.
 func (f *Fifo[T]) Add(values ...T) (*Fifo[T], error) {
 	f.lock.Lock()
 	defer f.lock.Unlock()
 
-	if f.limit > 0 && f.count >= f.limit {
+	if f.limit > 0 && f.count+uint64(len(values)) > f.limit {
 		return f, NewFifoLimitReachedError(int64(f.limit))
 	}
 
@@ -56,6 +60,8 @@ func (f *Fifo[T]) Add(values ...T) (*Fifo[T], error) {
 	return f, nil
 }
 
+// Next pops the next value from the end of the FIFO.
+// Returns an error if the FIFO is empty.
 func (f *Fifo[T]) Next() (T, error) {
 	f.lock.Lock()
 	defer f.lock.Unlock()
