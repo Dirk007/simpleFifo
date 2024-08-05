@@ -1,22 +1,22 @@
 package item
 
-type FifoItem[T any] struct {
+type DoubleLinkedItem[T any] struct {
 	content  T
-	previous *FifoItem[T]
-	next     *FifoItem[T]
+	previous *DoubleLinkedItem[T]
+	next     *DoubleLinkedItem[T]
 }
 
-func NewUnbound[T any](content T) *FifoItem[T] {
-	return &FifoItem[T]{content: content}
+func NewUnbound[T any](content T) *DoubleLinkedItem[T] {
+	return &DoubleLinkedItem[T]{content: content}
 }
 
-func (e *FifoItem[T]) Value() T {
+func (e *DoubleLinkedItem[T]) Value() T {
 	return e.content
 }
 
 // Remove removes the current item from the list and returns the new tail and the removed value.
 // If the current item is the only one in the list, the returned tail will be nil.
-func (e *FifoItem[T]) Remove() (*FifoItem[T], T) {
+func (e *DoubleLinkedItem[T]) Remove() (*DoubleLinkedItem[T], T) {
 	if e.previous == nil {
 		return nil, e.content
 	}
@@ -25,8 +25,8 @@ func (e *FifoItem[T]) Remove() (*FifoItem[T], T) {
 }
 
 // Prepend adds a new item to the beginning of the list and returns the new head.
-func (e *FifoItem[T]) Prepend(value T) *FifoItem[T] {
-	e.previous = &FifoItem[T]{
+func (e *DoubleLinkedItem[T]) Prepend(value T) *DoubleLinkedItem[T] {
+	e.previous = &DoubleLinkedItem[T]{
 		content:  value,
 		previous: nil,
 		next:     e,
